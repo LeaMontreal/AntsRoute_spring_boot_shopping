@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RestController
-public class MyImageController {
+public class ResourceController {
   @RequestMapping(value = "/assets/images/products/{category}/{filename}", method = RequestMethod.GET,
           produces = MediaType.IMAGE_JPEG_VALUE)
   public void getImage(
