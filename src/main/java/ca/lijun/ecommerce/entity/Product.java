@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
-@Table(name = "product")
+@Table(name = "product")  // "product" is the table name
 @Data
 public class Product {
   @Id
@@ -21,7 +21,7 @@ public class Product {
   @JoinColumn(name = "category_id", nullable = false)
   private ProductCategory category;
 
-  @Column(name = "sku")
+  @Column(name = "sku")   // "sku" is the column name
   private String sku;
 
   @Column(name = "name")

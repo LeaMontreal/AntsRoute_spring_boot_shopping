@@ -25,7 +25,9 @@ public class Customer {
   @Column(name="email")
   private String email;
 
+  // with cascade = CascadeType.ALL, when customer record is created, orders record will be created
   @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+//  @OneToMany(mappedBy = "customer")
   private Set<Order> orders = new HashSet<>();
 
   public void add(Order order) {

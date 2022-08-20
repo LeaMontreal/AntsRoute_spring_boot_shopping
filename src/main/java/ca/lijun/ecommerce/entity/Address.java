@@ -1,8 +1,11 @@
 package ca.lijun.ecommerce.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="address")
@@ -28,6 +31,10 @@ public class Address {
 
   @Column(name="zip_code")
   private String zipCode;
+
+//  @OneToMany(mappedBy = "billingAddress")
+////  @JsonIgnore
+//  private Set<Order> ordersByBillingAddress = new HashSet<>();
 
   @OneToOne
   @PrimaryKeyJoinColumn

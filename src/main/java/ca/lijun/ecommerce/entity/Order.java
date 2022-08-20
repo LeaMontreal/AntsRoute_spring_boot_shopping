@@ -50,6 +50,14 @@ public class Order {
   @JoinColumn(name = "customer_id")
   private Customer customer;
 
+//  @ManyToOne
+//  @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
+//  private Address shippingAddress;
+//
+//  @ManyToOne
+//  @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+//  private Address billingAddress;
+
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
   private Address shippingAddress;
