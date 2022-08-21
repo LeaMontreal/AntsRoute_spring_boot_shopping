@@ -5,6 +5,7 @@ import ca.lijun.ecommerce.entity.Product;
 import ca.lijun.ecommerce.entity.ProductCategory;
 import ca.lijun.ecommerce.entity.State;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
@@ -20,11 +21,13 @@ import java.util.Set;
 @Configuration
 public class MyDataRestConfig implements RepositoryRestConfigurer {
 
+  @Value("${allowed.origins}")
+  private String[] theAllowedOrigins;
   @Autowired
   private EntityManager entityManager;
 
   @Override
-  public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
+  public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry corsRegistry) {
 
     HttpMethod[] theUnsupportedActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE, HttpMethod.PATCH};
 
@@ -36,6 +39,11 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
     // call an internal helper method
     exposeIds(config);
+
+    // configure cors mapping
+    corsRegistry
+            .addMapping(config.getBasePath() + "/**")
+            .allowedOrigins(theAllowedOrigins);
   }
 
   // disable HTTP methods for ProductCategory: PUT, POST, DELETE and PATCH
