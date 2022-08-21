@@ -1,9 +1,6 @@
 package ca.lijun.ecommerce.config;
 
-import ca.lijun.ecommerce.entity.Country;
-import ca.lijun.ecommerce.entity.Product;
-import ca.lijun.ecommerce.entity.ProductCategory;
-import ca.lijun.ecommerce.entity.State;
+import ca.lijun.ecommerce.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +33,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
     disableHttpMethods(ProductCategory.class, config, theUnsupportedActions);
     disableHttpMethods(Country.class, config, theUnsupportedActions);
     disableHttpMethods(State.class, config, theUnsupportedActions);
+    disableHttpMethods(Order.class, config, theUnsupportedActions);
 
     // call an internal helper method
     exposeIds(config);
