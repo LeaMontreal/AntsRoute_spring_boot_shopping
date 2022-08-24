@@ -2,32 +2,39 @@ package ca.lijun.ecommerce.service;
 
 import ca.lijun.ecommerce.dao.AddressRepository;
 import ca.lijun.ecommerce.dao.CustomerRepository;
+import ca.lijun.ecommerce.dto.PaymentInfo;
 import ca.lijun.ecommerce.dto.Purchase;
 import ca.lijun.ecommerce.dto.PurchaseResponse;
 import ca.lijun.ecommerce.entity.Address;
 import ca.lijun.ecommerce.entity.Customer;
 import ca.lijun.ecommerce.entity.Order;
 import ca.lijun.ecommerce.entity.OrderItem;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CheckoutServiceImpl implements CheckoutService{
-  @Autowired
-  private CustomerRepository customerRepository;
-  @Autowired
-  private AddressRepository addressRepository;
 
-//  private CustomerRepository customerRepository;
-//
-//  public CheckoutServiceImpl(CustomerRepository customerRepository) {
-//    this.customerRepository = customerRepository;
-//  }
+  private CustomerRepository customerRepository;
+//  @Autowired
+//  private AddressRepository addressRepository;
+
+  // read stripe secret key from application.properties
+  public CheckoutServiceImpl(CustomerRepository customerRepository,
+                             @Value("${stripe.key.secret}") String secretKey) {
+    this.customerRepository = customerRepository;
+
+    // initialize Stripe API with secret key
+    Stripe.apiKey = secretKey;
+  }
 
   @Override
   @Transactional
@@ -80,6 +87,23 @@ public class CheckoutServiceImpl implements CheckoutService{
 
     // return a response
     return new PurchaseResponse(orderTrackingNumber);
+  }
+
+  @Override
+  public PaymentIntent createPaymentIntent(PaymentInfo paymentInfo) throws StripeException {
+    List<String> paymentMethodTypes = new ArrayList<>();
+    // "card" for credit card
+    paymentMethodTypes.add("card");
+
+    Map<String, Object> params = new HashMap<>();
+    params.put("amount", paymentInfo.getAmount());
+    params.put("currency", paymentInfo.getCurrency());
+    params.put("payment_method_types", paymentMethodTypes);
+    // add store info to “description”
+    params.put("description", "Map5-ECommerce purchase");
+
+    // send request to stripe.com
+    return PaymentIntent.create(params);
   }
 
   private String generateOrderTrackingNumber(){
