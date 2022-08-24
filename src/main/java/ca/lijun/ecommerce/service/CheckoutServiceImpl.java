@@ -102,6 +102,8 @@ public class CheckoutServiceImpl implements CheckoutService{
     // add store info to “description”
     params.put("description", "Map5-ECommerce purchase");
 
+    params.put("receipt_email", paymentInfo.getReceiptEmail());
+
     // send request to stripe.com
     return PaymentIntent.create(params);
   }
