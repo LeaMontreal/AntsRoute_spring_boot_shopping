@@ -14,7 +14,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     // this app acts as oauth2 Resource Server
     // support JWT-encoded bearer token
     http.authorizeRequests()
-            .antMatchers("/api/orders/**")
+            .antMatchers("/api/v1/orders/**")
             .authenticated()
             .and()
             .oauth2ResourceServer()

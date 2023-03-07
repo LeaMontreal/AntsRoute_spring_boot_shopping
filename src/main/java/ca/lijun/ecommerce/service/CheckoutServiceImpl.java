@@ -95,14 +95,18 @@ public class CheckoutServiceImpl implements CheckoutService{
     // "card" for credit card
     paymentMethodTypes.add("card");
 
+    System.out.println("***paymentInfo: " + paymentInfo);
+
     Map<String, Object> params = new HashMap<>();
     params.put("amount", paymentInfo.getAmount());
     params.put("currency", paymentInfo.getCurrency());
     params.put("payment_method_types", paymentMethodTypes);
     // add store info to “description”
-    params.put("description", "Map5-ECommerce purchase");
+    params.put("description", "Ants Route purchase");
 
     params.put("receipt_email", paymentInfo.getReceiptEmail());
+
+    System.out.println("***params: " + params);
 
     // send request to stripe.com
     return PaymentIntent.create(params);
